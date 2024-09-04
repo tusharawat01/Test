@@ -100,6 +100,7 @@ export default function ForgotPassword() {
     }
     setLoading(true);
     const changePassToken = cookies.get('changePassToken');
+    console.log("Change Password Token:", changePassToken);
 
     try {
       const response = await axios.post(

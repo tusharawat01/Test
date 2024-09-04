@@ -12,6 +12,7 @@ import { IoIosArrowDroprightCircle } from "react-icons/io";
 import { usePathname, useRouter } from 'next/navigation';
 import { PiSignOut } from "react-icons/pi";
 import { pilotData, SidebarState } from '@/atom/states';
+import toast from "react-hot-toast";
 
 import { useRecoilState } from 'recoil';
 
@@ -91,6 +92,7 @@ const PilotSideBar = () => {
             <div onClick={()=>{
             cookies.remove('auth')
             router.push('/pilot/login')
+            toast.success("Logout Successfully");
         }
 
             } title='Sign out' className=' flex my-1 hover:bg-stone-500 inset-x-0 w-[80%] mx-auto rounded-md p-2 cursor-pointer  text-gray-100 items-center gap-x-4 

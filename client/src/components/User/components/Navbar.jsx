@@ -179,7 +179,7 @@ const Navbar = () => {
                     onClick={() => setShowDropdown(!showDropdown)}
                   >
                     <span className="sr-only">Open user menu</span>
-                    <Image className="w-8 h-8 rounded-full" src={user?.avatar || defaultavatar} alt={user?.fullName} />
+                    <img className="w-8 h-8 rounded-full" src={user?.avatar || defaultavatar} alt={user?.fullName} />
                   </button>
                   {/* Dropdown menu */}
                   {showDropdown && (
