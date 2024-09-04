@@ -74,13 +74,7 @@ export default function ForgotPassword() {
 
       const token = response?.data.token;
       const expirationDate = new Date(Date.now() + (5 * 60 * 1000));
-      // cookies.set('changePassToken', token, { expires: expirationDate, path: '/' });
-      cookies.set('changePassToken', token, {
-        expires: expirationDate,
-        path: '/',
-        secure: process.env.NEXT_PUBLIC_NODE_ENV === 'production', // Send cookie over HTTPS only in production
-        sameSite: 'None', // Allows cross-site cookie requests, necessary for cookies sent in cross-origin requests
-    });
+      cookies.set('changePassToken', token, { expires: expirationDate, path: '/' });
       cookies.remove("forgotAuth");
 
       toast.success(response?.data?.message || "OTP verified successfully");
@@ -106,7 +100,6 @@ export default function ForgotPassword() {
     }
     setLoading(true);
     const changePassToken = cookies.get('changePassToken');
-    console.log("Change Password Token:", changePassToken);
 
     try {
       const response = await axios.post(
