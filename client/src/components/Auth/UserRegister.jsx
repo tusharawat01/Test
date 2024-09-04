@@ -88,7 +88,7 @@ export default function UserRegister() {
       const token = res.data.token;
       const expirationDate = new Date(Date.now() + (1 * 24 * 60 * 60 * 1000));
       cookies.set('auth', token, { expires: expirationDate, path: '/' });
-      toast.success("Alright! You are registered", {
+      toast.success("Registered successfully", {
         duration: 3000
       });
 
@@ -141,38 +141,6 @@ export default function UserRegister() {
 
 
 
-  // const handleSendOtp = async () => {
-  //   if (details.fullName === "" || details.phoneNumber === "" || details.areaPin === "" || !pinValid || details.city === "" || details.state === "" || details.locality === "") {
-  //     toast.error("All Fields are Required");
-  //     return;
-  //   }
-  //   try {
-  //     setRegLoading(true);
-  //     const res = await axios.post(`${requestUrl}/user/sendPhoneOTP`, { phoneNumber: details.phoneNumber, countryCode: details.countryCode }, { withCredentials: true });
-
-  //     if (res.status === 200 && res.data.phoneNumber && res.data.countryCode && res.data.email) {
-  //       setDetails((p) => ({ ...p, phoneNumber: res.data.phoneNumber, countryCode: res.data.countryCode }));
-  //       message.warning("User already registered.", 3);
-  //     }else if (res.status === 200 && res.data.phoneNumber && res.data.countryCode ) {
-  //       setDetails((p) => ({ ...p, phoneNumber: res.data.phoneNumber, countryCode: res.data.countryCode }));
-  //       setStep(1);
-  //       message.warning("Phone already registered. Kindly create account credentials.", 3);
-  //     } else {
-  //       setOtpSent(true);
-  //       setResendCooldown(120);
-  //       setOrderId(res.data.orderId);
-  //       toast.success("OTP sent successfully!");
-  //     }
-  //     setRegLoading(false);
-
-  //   } catch (error) {
-
-  //     toast.error(error.response.data.message || "Failed to send OTP. Please try again.");
-  //     setRegLoading(false);
-  //   }
-  // };
-
-
   const handleSendOtp = async () => {
     if (details.fullName === "" || details.phoneNumber === "" || details.areaPin === "" || !pinValid || details.city === "" || details.state === "" || details.locality === "") {
       toast.error("All Fields are Required");
@@ -182,9 +150,12 @@ export default function UserRegister() {
       setRegLoading(true);
       const res = await axios.post(`${requestUrl}/user/sendPhoneOTP`, { phoneNumber: details.phoneNumber, countryCode: details.countryCode }, { withCredentials: true });
 
-      if (res.status === 200 && res.data.phoneNumber && res.data.countryCode) {
+      if (res.status === 200 && res.data.phoneNumber && res.data.countryCode && res.data.email) {
         setDetails((p) => ({ ...p, phoneNumber: res.data.phoneNumber, countryCode: res.data.countryCode }));
-        // setStep(1);
+        message.warning("User already registered.", 3);
+      }else if (res.status === 200 && res.data.phoneNumber && res.data.countryCode ) {
+        setDetails((p) => ({ ...p, phoneNumber: res.data.phoneNumber, countryCode: res.data.countryCode }));
+        setStep(1);
         message.warning("Phone already registered. Kindly create account credentials.", 3);
       } else {
         setOtpSent(true);
@@ -200,6 +171,35 @@ export default function UserRegister() {
       setRegLoading(false);
     }
   };
+
+
+  // const handleSendOtp = async () => {
+  //   if (details.fullName === "" || details.phoneNumber === "" || details.areaPin === "" || !pinValid || details.city === "" || details.state === "" || details.locality === "") {
+  //     toast.error("All Fields are Required");
+  //     return;
+  //   }
+  //   try {
+  //     setRegLoading(true);
+  //     const res = await axios.post(`${requestUrl}/user/sendPhoneOTP`, { phoneNumber: details.phoneNumber, countryCode: details.countryCode }, { withCredentials: true });
+
+  //     if (res.status === 200 && res.data.phoneNumber && res.data.countryCode) {
+  //       setDetails((p) => ({ ...p, phoneNumber: res.data.phoneNumber, countryCode: res.data.countryCode }));
+  //       // setStep(1);
+  //       message.warning("Phone already registered. Kindly create account credentials.", 3);
+  //     } else {
+  //       setOtpSent(true);
+  //       setResendCooldown(120);
+  //       setOrderId(res.data.orderId);
+  //       toast.success("OTP sent successfully!");
+  //     }
+  //     setRegLoading(false);
+
+  //   } catch (error) {
+
+  //     toast.error(error.response.data.message || "Failed to send OTP. Please try again.");
+  //     setRegLoading(false);
+  //   }
+  // };
 
 
   const handleVerifyOtp = async () => {

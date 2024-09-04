@@ -35,8 +35,10 @@ export default function UserLogin() {
 
         if (status === 'approved') {
             router.push(`/pilot/dashboard/${fullName?.toLowerCase().replace(' ', '-')}`);
+            toast.success("Welcome back");
         } else {
             router.push('/user/profile');
+            toast.success("Welcome back");
         }
       } catch (error) {
         cookies.remove('auth');

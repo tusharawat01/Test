@@ -35,7 +35,8 @@ router.post("/reset/admin/password",resetPassword);
 router.get('/pincode/:value', async (req, res) => {
     const { value } = req.params;
     try {
-      const response = await axios.get(`https://api.pincode-finder.com/${value}`);
+      // const response = await axios.get(`https://api.pincode-finder.com/${value}`);
+      const response = await axios.get(`https://api.postalpincode.in/pincode/${value}`);
       res.json(response.data);
     } catch (error) {
       console.error(error);

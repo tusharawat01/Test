@@ -28,6 +28,7 @@ const UserDashboard = () => {
         try {
             cookies.remove('auth');
             setUser(null);
+            toast.success("Logout Successfully");
             router.push("/");
         } catch (error) {
             toast.error("Could not log out");

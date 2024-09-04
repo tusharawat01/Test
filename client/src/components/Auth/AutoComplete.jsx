@@ -6,6 +6,7 @@ import axios from 'axios';
 import { requestUrl } from '../../utils/constants';
 import { CheckOutlined } from '@ant-design/icons';
 import { IoMdLocate } from 'react-icons/io';
+import toast from "react-hot-toast";
 
 const AutoCompleteComponent = ({ setDetails,pinValid,setPinValid, details, otpSent }) => {
     const [areas, setAreas] = useState([]);
@@ -19,9 +20,14 @@ const AutoCompleteComponent = ({ setDetails,pinValid,setPinValid, details, otpSe
             setOptionsVisible(true);
             try {
                 const response = await axios.get(`${requestUrl}/pincode/${value}`);
+
+                if(response.data[0].PostOffice === null){
+                    toast.error("Not a Valid Pincode")
+                }else{
+                    setAreas(response.data[0].PostOffice);
+                    setPinValid(true);
+                }
                 
-                setAreas(response.data);
-                setPinValid(true);
             } catch (error) {
                 
                 setDetails((prevDetails) => ({
@@ -54,15 +60,19 @@ const AutoCompleteComponent = ({ setDetails,pinValid,setPinValid, details, otpSe
 
 
     const handleAreaSelect = (value) => {
-        const selectedArea = areas.find((area) => area.office_name === value);
+        const selectedArea = areas.find((area) => area.Name === value);
+
         if (selectedArea) {
-            const { office_name, district_name, state_name, longitude, latitude, pincode } = selectedArea;
+            const { Name, District, State, longitude, latitude, Pincode } = selectedArea;
+            console.log("Lat :", parseFloat(latitude));
+            console.log("Long :", parseFloat(longitude) );
+            
             setDetails((prevDetails) => ({
                 ...prevDetails,
-                locality: `${pincode}-${office_name}, ${district_name}, ${state_name}`,
-                area: office_name,
-                city: district_name,
-                state: state_name,
+                locality: `${Pincode}-${Name}, ${District}, ${State}`,
+                area: Name,
+                city: District,
+                state: State,
                 coordinates: { lat: parseFloat(latitude), lon: parseFloat(longitude) },
             }));
         }
@@ -75,8 +85,8 @@ const AutoCompleteComponent = ({ setDetails,pinValid,setPinValid, details, otpSe
                 size="large"
                 className="w-full"
                 options={areas.map((area) => ({
-                    label: `${area.pincode}-${area.office_name}, ${area.district_name}, ${area.state_name}`,
-                    value: area.office_name,
+                    label: `${area.Pincode}-${area.Name}, ${area.District}, ${area.State}`,
+                    value: area.Name,
                 }))}
                 onSelect={handleAreaSelect}
                 onSearch={handlePinChange}
